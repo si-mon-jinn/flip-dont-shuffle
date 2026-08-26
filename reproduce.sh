@@ -68,6 +68,9 @@ python compute_ks_twosample_wm_table.py
 python compute_null_calibration_table.py
 python compute_ppl_hash_isolation_table.py
 python compute_zscore_wm_table.py
+python compute_generalization_table.py
+python compute_robustness_table.py
+python compute_vllm_overhead_table.py
 
 cd ..
 

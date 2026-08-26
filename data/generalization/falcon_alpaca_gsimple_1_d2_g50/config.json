@@ -1,0 +1,36 @@
+{
+  "experiment_id": "falcon_alpaca_gsimple_1_d2_g50",
+  "seed": 42,
+  "generation": {
+    "endpoint": "http://localhost:8008/v1",
+    "model": "tiiuae/falcon-7b",
+    "max_tokens": 200,
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "watermark_params": {
+      "gamma": 0.5,
+      "delta": 2,
+      "seeding_scheme": "gpu-simple_1",
+      "hash_key": 15485863
+    }
+  },
+  "dataset": {
+    "name": "alpaca",
+    "split": "train",
+    "num_samples": 200
+  },
+  "detection": {
+    "tokenizer": "tiiuae/falcon-7b",
+    "seeding_scheme": "gpu-simple_1",
+    "hash_key": 15485863,
+    "threshold_z": 4
+  },
+  "metrics": [
+    "perplexity"
+  ],
+  "attacks": [],
+  "reference_model": {
+    "endpoint": "https://api-gpt.jrc.ec.europa.eu/v1",
+    "model": "mistral-small-3.2-24b"
+  }
+}

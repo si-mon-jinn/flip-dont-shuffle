@@ -1,6 +1,6 @@
 \documentclass[11pt]{article}
 
-\usepackage[review]{acl}
+\usepackage{acl}
 
 \usepackage{times}
 \usepackage{latexsym}
@@ -26,15 +26,24 @@
 
 \title{Flip, Don't Shuffle: Watermarking LLMs at the Speed of Inference}
 
-\author{Simone Ceppi \and Ignacio Sanchez \\
-  European Commission, Joint Research Centre \\
+\author{
+  Simone Ceppi \\
+  European Commission \\
+  Joint Research Centre \\
   Ispra, Italy \\
-  \texttt{\{simone.ceppi, ignacio.sanchez\}@ec.europa.eu}}
+  \texttt{simone.ceppi@ec.europa.eu}
+  \And
+  Ignacio Sanchez \\
+  European Commission \\
+  Joint Research Centre \\
+  Ispra, Italy \\
+  \texttt{ignacio.sanchez@ec.europa.eu}
+}
 
 \begin{document}
 \maketitle
 \begin{abstract}
-We introduce Stateless Bernoulli Watermarking (SBW), a new statistical watermark for Large Language Models that determines green list membership through independent per-token Bernoulli trials. Unlike KGW's vocabulary permutation or SynthID's multi-layer tournament, SBW requires only a single comparison per token against a counter-based RNG, reducing membership complexity to $O(1)$ and enabling single-kernel execution with zero intermediate allocations. We prove that this formulation preserves the same detection guarantees as fixed-size green lists: the z-score test remains $\mathcal{N}(0,1)$ under the null. The stateless architecture enables capabilities unavailable to existing methods: full-vocabulary self-salt watermarking (over 6000$\times$ faster than KGW's self-salt and 2$\times$ faster than SynthID despite biasing the entire vocabulary with candidate-dependent seeding) and architectural compatibility with distributed inference. In end-to-end generation benchmarks, SBW adds less than 1\% overhead at all batch sizes. We additionally identify hash function design as a previously unexplored axis for watermark quality, showing that a GPU-native Jenkins hash improves null calibration by 1.8$\times$ while producing more diverse text. Experiments across two seeding schemes and eight $(\gamma, \delta)$ configurations confirm statistical equivalence with ROC-AUC differences below 0.01.
+We introduce Stateless Bernoulli Watermarking (SBW), a new statistical watermark for Large Language Models that determines green list membership through independent per-token Bernoulli trials. Unlike KGW's vocabulary permutation or SynthID's multi-layer tournament, SBW requires only a single comparison per token against a counter-based random number generator, reducing membership complexity to $O(1)$ and enabling single-kernel execution with zero intermediate allocations. We prove that this formulation preserves the same detection guarantees as fixed-size green lists: the z-score test remains $\mathcal{N}(0,1)$ under the null. The stateless architecture enables capabilities unavailable to existing methods: full-vocabulary self-salt watermarking (over 6000$\times$ faster than KGW's self-salt and 2$\times$ faster than SynthID despite biasing the entire vocabulary with candidate-dependent seeding) and architectural compatibility with distributed inference. In end-to-end generation benchmarks, SBW adds less than 1\% overhead at all batch sizes. We additionally identify hash function design as a previously unexplored axis for watermark quality, showing that a GPU-native Jenkins hash improves null calibration by 1.8$\times$ while producing more diverse text. Experiments across two seeding schemes and eight $(\gamma, \delta)$ configurations confirm statistical equivalence with ROC-AUC differences below 0.01.
 \end{abstract}
 
 \section{Introduction and State of the Art}
@@ -43,7 +52,9 @@ As Large Language Models (LLMs) become integrated into the global information in
 
 Different methods exist to apply a watermark during text generation~\cite{liu2024taxonomy,zhang2024watermarking}. These include adversarial learning approaches that train a model to embed a retrievable signal~\cite{abdelnabi2021awt,li2023plmmark}, with recent work showing that decoding-based watermarks can also be distilled into model weights~\cite{gu2024learnability}, post-hoc methods that modify text after generation (e.g., synonym substitution~\cite{munyer2023natural}, semantic word insertion~\cite{chang2024postmark}), and statistical methods that modify the token sampling process itself~\cite{kirchenbauer2023watermark,christ2023undetectable,kuditipudi2023robust,hu2023unbiased,wu2024dipmark,dathathri2024scalable,zhao2025permute}. This work focuses on the last category, introduced by \citet{kirchenbauer2023watermark}, where green list biasing preserves output quality while showing resilience to basic paraphrasing attacks~\cite{kirchenbauer2024reliability}, though adaptive attackers can degrade detection rates~\cite{diaa2025adaptive,rastogi2024revisiting} and even steal watermark schemes from API access~\cite{jovanovic2024stealing}. Google's SynthID-Text~\cite{dathathri2024scalable} demonstrated production-scale deployment, confirming industry demand for efficient watermarking. However, KGW involves an inherently unfusible operation (vocabulary permutation via \texttt{randperm}), while SynthID requires $m=30$ sequential reweighting passes that impose per-token compute proportional to tournament depth. As vocabulary sizes grow beyond 100K tokens and deployments scale to millions of concurrent users, a watermarking method with $O(1)$ per-token cost compiling into a single fused kernel with no intermediate allocations would eliminate this overhead entirely.
 
-\textbf{Contributions.} We introduce \emph{Stateless Bernoulli Watermarking} (SBW), which replaces KGW's vocabulary permutation and SynthID's tournament passes with independent per-token Bernoulli trials: a local, stateless decision. We prove this preserves identical detection guarantees: the z-score test remains $\mathcal{N}(0,1)$ under the null (Section~\ref{sec:theory}, validated in Section~\ref{sec:experiments}). The stateless formulation enables: (1) single-kernel $O(1)$ watermarking with zero intermediate allocation, (2) true full-vocabulary self-salt without top-$k$ approximation, and (3) compatibility with distributed inference (Section~\ref{sec:capabilities}). In benchmarks, SBW achieves 2$\times$ lower latency than SynthID and over 6000$\times$ lower than KGW, while being the first method to support full-vocabulary self-salt at production scale (Section~\ref{sec:scaling}). We provide a production-ready implementation integrated with vLLM~\cite{kwon2023efficient}. We additionally identify hash function design as a previously unexplored factor in watermark quality (Section~\ref{sec:hash}).
+\newpage
+
+\textbf{Contributions.} We introduce \emph{Stateless Bernoulli Watermarking} (SBW), which replaces KGW's vocabulary permutation and SynthID's tournament passes with independent per-token Bernoulli trials: a local, stateless decision. We prove this preserves identical detection guarantees under the standard null model (Section~\ref{sec:theory}); experiments confirm this equivalence holds empirically, where SBW and KGW deviate identically from the idealized $\mathcal{N}(0,1)$ on real LLM generations (Section~\ref{sec:experiments}). The stateless formulation enables: (1) single-kernel $O(1)$ watermarking with zero intermediate allocation, (2) true full-vocabulary self-salt without top-$k$ approximation, and (3) compatibility with distributed inference (Section~\ref{sec:capabilities}). In benchmarks, SBW achieves 2$\times$ lower latency than SynthID and over 6000$\times$ lower than KGW, while being the first method to support full-vocabulary self-salt at production scale (Section~\ref{sec:scaling}). We provide a production-ready implementation integrated with vLLM~\cite{kwon2023efficient}. We additionally identify hash function design as a previously unexplored factor in watermark quality (Section~\ref{sec:hash}).
 
 
 \section{Stateless Bernoulli Watermarking}
@@ -65,7 +76,7 @@ The modified logits $l'_t$ are computed as in the KGW method:
 l'_{t,v} = \begin{cases} l_{t,v} + \delta & \text{if } v \in G_t \\ l_{t,v} & \text{if } v \notin G_t \end{cases}.
 \end{equation}
 
-The key insight is that a counter-based RNG (CBRNG), given a seed and a position, computes the random value at that position in $O(1)$ without computing any preceding values. This allows us to determine the ``greenness'' of any token ID independently, turning a global coordination problem into a local, parallelizable computation. Our implementation uses Philox 4x32-10~\cite{salmon2011parallel}, a CBRNG with strong statistical properties and native GPU support.
+The key insight is that a counter-based random number generator (CBRNG), given a seed and a position, computes the random value at that position in $O(1)$ without computing any preceding values. This allows us to determine the ``greenness'' of any token ID independently, turning a global coordination problem into a local, parallelizable computation. Our implementation uses Philox 4x32-10~\cite{salmon2011parallel}, a CBRNG with strong statistical properties and native GPU support.
 
 The practical benefits are substantial:
 \begin{itemize}
@@ -80,7 +91,7 @@ The theoretical cost is that $|G_t|$ becomes a random variable with $\mathbb{E}[
 
 For seeding schemes that hash token IDs (\texttt{selfhash}, \texttt{minhash}, \texttt{skipgram}), KGW uses a pre-generated permutation table to map tokens to ${\sim}10^6$ distinct values. This requires a memory lookup per hash call.
 
-We replace this with the Bob Jenkins integer hash~\cite{jenkins1997hash}, that compiles into pure ALU instructions with full throughput avoiding scattered memory accesses that thrash GPU caches. The larger output range also has consequences for watermark quality, which we analyze in Section~\ref{sec:hash}.
+We replace this with the Bob Jenkins integer hash~\cite{jenkins1997hash}, that compiles into pure ALU instructions with full throughput avoiding scattered memory accesses that thrash GPU caches. This substitution does not affect watermark security, which rests on the secret key. The larger output range also has consequences for watermark quality, which we analyze in Section~\ref{sec:hash}.
 
 \section{Theoretical Analysis of Equivalence}
 \label{sec:theory}
@@ -121,7 +132,7 @@ To validate our theoretical equivalence claims, we conducted systematic experime
 
 \subsection{Experimental Setup}
 
-\textbf{Models and data.} We used Qwen3-8B~\cite{yang2025qwen3} (vocabulary size 151,936) for generation and Qwen3.5-27B~\cite{qwen2025qwen35omni} as an external perplexity judge. Prompts (500) were sampled from the C4 validation split~\cite{raffel2020exploring}, each truncated to 30 tokens. All experiments ran on a single NVIDIA RTX 3090 using temperature $T=1.0$ (pure sampling without top-p truncation). Full reproducibility details are in Appendix~\ref{app:reproducibility}.
+\textbf{Models and data.} We used Qwen3-8B~\cite{yang2025qwen3} (vocabulary size 151,936) for generation and Qwen3.5-27B~\cite{qwen2025qwen35omni} as an external perplexity judge. Prompts (500) were sampled from the C4 validation split~\cite{raffel2020exploring}, each truncated to 30 tokens. All experiments ran on a single NVIDIA RTX 3090 using temperature $T=1.0$ (pure sampling without top-p truncation). Full reproducibility details are in Appendix~\ref{app:reproducibility}. Validation on Falcon-7B with different sampling ($T{=}0.7$, $top\_p{=}0.8$) and hardware (A6000) confirms the results generalize beyond this setup (Appendix~\ref{app:generalization}).
 
 \textbf{Watermark schemes.} We focus on two seeding strategies from \citet{kirchenbauer2023watermark}: context-only seeding (\texttt{simple\_1}, context width 1) and self-salt seeding (\texttt{selfhash}, context width 4 plus candidate token). Table~\ref{tab:schemes} summarizes all schemes evaluated. Statistical equivalence (this section) is validated on SBW-1 and SBW-ss, which match the KGW baselines in context width and candidate coverage. Performance benchmarks (Section~\ref{sec:scaling}) additionally include full-vocabulary variants (SBW-4, SBW-ss-V) that bias the entire 151K vocabulary.
 
@@ -314,7 +325,7 @@ Our approach reduces the per-candidate cost to $O(1)$, making full-vocabulary se
 \subsection{Inherited Security and Robustness}
 \label{sec:security}
 
-A natural question is whether SBW inherits the security and robustness guarantees established for KGW~\cite{kirchenbauer2023watermark,kirchenbauer2024reliability,fernandez2023three,zhao2023provable}. We argue that it does, inheriting both the strengths and the fundamental limitations~\cite{zhang2024impossibility} of the underlying statistical framework. The existing theoretical analyses rely on a single statistical property: conditioned on the seeding context, each token is assigned to the green list with probability $\gamma$, independently of other tokens. Our Proposition~1 proves that SBW satisfies exactly this property. Any theorem whose proof depends only on this independence and the marginal $\gamma$ transfers directly, including detection power and false positive rates (confirmed empirically by our two-sample KS tests, Table~\ref{tab:ks_twosample_nowm}), robustness to partial edits (same signal degradation for identical seeding schemes), resistance to removal attacks (same $\delta$ bias profile), and security against spoofing (inverting the CBRNG is computationally equivalent to inverting KGW's PRF-seeded permutation).
+A natural question is whether SBW inherits the security and robustness guarantees established for KGW~\cite{kirchenbauer2023watermark,kirchenbauer2024reliability,fernandez2023three,zhao2023provable}. We argue that it does, inheriting both the strengths and the fundamental limitations~\cite{zhang2024impossibility} of the underlying statistical framework. The existing theoretical analyses rely on a single statistical property: conditioned on the seeding context, each token is assigned to the green list with probability $\gamma$, independently of other tokens. Our Proposition~1 proves that SBW satisfies exactly this property. Any theorem whose proof depends only on this independence and the marginal $\gamma$ transfers directly, including detection power and false positive rates (confirmed empirically by our two-sample KS tests, Table~\ref{tab:ks_twosample_nowm}), robustness to partial edits (same signal degradation for identical seeding schemes), resistance to removal attacks (same $\delta$ bias profile), and security against spoofing (inverting the CBRNG is computationally equivalent to inverting KGW's PRF-seeded permutation). Appendix~\ref{app:robustness} validates this empirically: across 19 attack configurations (character/word edits, truncation, paraphrasing, MLM substitution), SBW matches or exceeds (due to improved hash function; Section~\ref{sec:hash}) KGW's robustness in all cases.
 
 \section{Performance Evaluation}
 \label{sec:scaling}
@@ -325,7 +336,7 @@ Fig.~\ref{fig:e2e_overhead} reports the results. SBW adds less than 1\% overhead
 
 The relative overhead (right panel) reveals distinct scaling regimes. SBW's percentage overhead remains approximately constant (${\sim}$0.5\%) across all batch sizes, while SynthID's decreases from 6\% to 0.6\%. This is explained by GPU compute saturation: SBW computes seeds for every token in the 151K vocabulary (full-vocab self-salt), performing ${\sim}$3800$\times$ more work per position than SynthID's top-40 approximation. This full-vocabulary computation saturates GPU compute around $B$=32--64, as confirmed by isolated kernel benchmarks (Appendix~\ref{app:performance}). Beyond this saturation point, the watermark kernel time grows proportionally with batch size, matching the growth rate of generation time, yielding a constant percentage overhead. SynthID's top-40 approximation requires far less compute and does not saturate, so its fixed absolute cost (${\sim}$100--200~ms) becomes a shrinking fraction of the growing generation time. The two curves cross at $B{\approx}$256; on more powerful hardware, this crossing point would shift to higher batch sizes (as the saturation threshold increases), but the crossing is inherent to the asymmetry in computational work.
 
-These measurements are conservative for SBW: in production vLLM deployments, the watermark kernel runs on the same CUDA stream as the model forward pass, allowing partial overlap with memory-bound operations. Neither KGW (CPU-side \texttt{randperm}) nor SynthID (stateful mixin design) can benefit from this pipelining.
+These measurements are conservative for SBW: in production vLLM deployments, the watermark kernel runs on the same CUDA stream as the model forward pass, allowing partial overlap with memory-bound operations. Neither KGW (CPU-side \texttt{randperm}) nor SynthID (stateful mixin design) can benefit from this pipelining. A dedicated vLLM serving benchmark confirms ${\sim}$1\% overhead at production concurrency (Appendix~\ref{app:vllm}), with room for further optimization.
 
 In isolated benchmarks measuring only the watermarking logits processor (excluding the LLM forward pass), SBW achieves \textbf{2--3$\times$ lower latency than SynthID}~\cite{dathathri2024scalable} and \textbf{over 6000$\times$ lower than KGW}~\cite{kirchenbauer2023watermark}, despite processing the entire 151K vocabulary with candidate-dependent seeding while SynthID processes only top-40 and KGW is limited to top-40 self-salt. Our schemes also use zero additional memory (in-place logit mutation), while KGW allocates $9 B \cdot V$ bytes per step and SynthID allocates tensors proportional to $B \times k \times \text{depth}$ (reaching 3.8~MB at batch 512). We note that SynthID provably preserves the output distribution (non-distortionary), while our method adds $\delta$ to green token logits with negligible perplexity impact at practical values ($\delta \leq 2$, Section~\ref{sec:perplexity}). Full isolated latency results, tail latency percentiles, speedup ratios, and memory overhead are reported in Appendix~\ref{app:performance}.
 
@@ -347,7 +358,7 @@ Regarding false accusations, the z-score framework provides calibrated Type~I er
 
 \section{Limitations}
 
-Our evaluation has limitations that suggest directions for future work. First, all experiments were conducted on a single GPU (RTX 3090) and a single model (Qwen3-8B); generalization to other hardware and model architectures remains to be validated. Second, our robustness analysis is limited: we did not evaluate resistance to paraphrasing attacks, truncation, or other post-hoc modifications; while our theoretical argument for inherited security is grounded in the shared statistical property (Section~\ref{sec:security}), empirical validation under adversarial conditions remains necessary. Third, our GPU implementation relies on compiler-generated Triton kernels via \texttt{torch.compile}; hand-tuned CUDA kernels with explicit memory coalescing and warp-level optimizations could further reduce latency, particularly at small batch sizes where kernel launch overhead dominates. Fourth, while the stateless formulation is architecturally compatible with distributed and multi-device inference (each device can independently compute identical green lists from the shared key), we have not empirically validated this in a tensor-parallel or pipeline-parallel deployment.
+Our evaluation has limitations that suggest directions for future work. First, the main experiments use a single GPU (RTX 3090) and model (Qwen3-8B); while we validate on an additional model and setup (Appendix~\ref{app:generalization}), broader evaluation across model families remains future work. Second, while we validate robustness across 19 attack configurations (Appendix~\ref{app:robustness}), we did not evaluate adaptive watermark-removal strategies or spoofing attacks; dedicated security analysis remains future work. Third, our GPU implementation relies on compiler-generated Triton kernels via \texttt{torch.compile}; hand-tuned CUDA kernels with explicit memory coalescing and warp-level optimizations could further reduce latency, particularly at small batch sizes where kernel launch overhead dominates. Fourth, while the stateless formulation is architecturally compatible with distributed and multi-device inference (each device can independently compute identical green lists from the shared key), we have not empirically validated this in a tensor-parallel or pipeline-parallel deployment.
 
 \bibliography{custom}
 
@@ -487,7 +498,7 @@ The KGW baseline uses our re-implementation (\texttt{sbw-watermark}, scheme \tex
 
 \subsection{Improvements to the SynthID Baseline}
 
-We benchmark against SynthID-Text~\cite{dathathri2024scalable}, vendored from the official \texttt{google-deepmind/synthid-text} repository (Apache 2.0 license). To measure SynthID's \emph{theoretical minimum} latency, we inline all operations into a single \texttt{torch.compile(mode="max-autotune")} function, stripping state management, context history tracking, and safety checks. We verified bit-identical outputs between our compiled pipeline and the reference implementation; tests are available in the paper repository. This gives SynthID every advantage: our reported numbers represent a lower bound on its actual production cost.
+We benchmark against SynthID-Text~\cite{dathathri2024scalable}, vendored from the official \texttt{google-deepmind/synthid-text} repository (Apache 2.0 license). To measure SynthID's \emph{theoretical minimum} latency, we inline all operations into a single \texttt{torch.compile} call with \texttt{mode="max-autotune"}, stripping state management, context history tracking, and safety checks. We verified bit-identical outputs between our compiled pipeline and the reference implementation; tests are available in the paper repository. This gives SynthID every advantage: our reported numbers represent a lower bound on its actual production cost.
 
 \subsection{Our GPU Implementation}
 
@@ -500,7 +511,7 @@ All measurements use identical methodology:
 \item CUDA event timing with \texttt{torch.cuda.synchronize()} between iterations
 \item 20 warmup iterations (discarded) followed by 200 measurement iterations
 \item \texttt{torch.cuda.empty\_cache()} between methods to prevent memory interference
-\item Same \texttt{torch.compile(mode="max-autotune")} for all compiled paths
+\item Same \texttt{torch.compile} with \texttt{mode="max-autotune"} for all compiled paths
 \item Sequential execution (no parallel streams or concurrent kernels)
 \item Fresh random logits tensor of shape $(B, 151{,}936)$ for each method
 \end{itemize}
@@ -605,6 +616,79 @@ Table~\ref{tab:memory} reports peak additional GPU memory allocated during water
 \vspace{-2mm}
 {\small RTX 3090, V=151,936. Delta from baseline (no watermark).}
 \end{table*}
+
+\subsection{vLLM Serving Benchmark}
+\label{app:vllm}
+
+To validate production deployment overhead, we benchmarked SBW within a vLLM serving stack (Qwen3-8B, 128 requests, 200 output tokens). Table~\ref{tab:vllm_overhead} reports request throughput with and without the SBW logits processor at various concurrency levels.
+
+\begin{table}[h]
+\caption{vLLM Serving Overhead}
+\label{tab:vllm_overhead}
+\begin{center}
+\footnotesize
+\input{tables/tab_vllm_overhead.tex}
+\end{center}
+\vspace{-2mm}
+{\small Qwen3-8B, 128 requests, 200 tokens, full-vocabulary self-salt.}
+\end{table}
+
+At production concurrency ($\geq$32 concurrent requests), SBW adds ${\sim}$1\% overhead.
+
+\section{Generalization Experiments}
+\label{app:generalization}
+
+To validate that SBW's equivalence to KGW generalizes beyond the main experimental setup, we conducted additional experiments varying five factors simultaneously (Table~\ref{tab:generalization_setup}).
+
+\begin{table}[h]
+\caption{Generalization Experiment Setup}
+\label{tab:generalization_setup}
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}lll@{}}
+\toprule
+Variable & Main paper & Generalization \\
+\midrule
+Generation model & Qwen3-8B & Falcon-7B \\
+Judge model & Qwen3.5-27B & Mistral-small-3.2-24b \\
+Dataset & C4 (web text) & Alpaca (instructions) \\
+Sampling & $T{=}1.0$, pure & $T{=}0.7$, $top\_p{=}0.8$ \\
+Hardware & RTX 3090 & A6000 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{table}
+
+We ran 200 samples per scheme at $\delta=2$, $\gamma=0.50$. Table~\ref{tab:generalization} reports two-sample KS tests comparing KGW and SBW z-score distributions. All tests fail to reject equivalence ($p > 0.05$), confirming that the Bernoulli construction's equivalence is independent of model architecture, vocabulary size, prompt distribution, sampling strategy, and hardware.
+
+\begin{table}[h]
+\caption{Two-Sample KS Tests: KGW vs SBW on Falcon-7B}
+\label{tab:generalization}
+\begin{center}
+\footnotesize
+\input{tables/tab_generalization.tex}
+\end{center}
+\vspace{-2mm}
+{\small Falcon-7B, Alpaca prompts, $\delta=2$, $\gamma=0.50$, 200 samples.}
+\end{table}
+
+\section{Robustness to Attacks}
+\label{app:robustness}
+
+To validate that SBW inherits KGW's robustness properties, we evaluated both methods under 19 attack configurations across four categories. \emph{Character-level attacks} randomly substitute or delete individual characters at various fractions (1--20\%). \emph{Structural attacks} truncate the text, keeping only the first 25--75\% of tokens. \emph{Word-level attacks} delete random words (10--30\%) or reorder all words within each sentence. \emph{Semantic attacks} include LLM-based paraphrasing at three intensity levels (Qwen3-4B) and masked language model substitution replacing 10--20\% of words with contextually plausible alternatives (T5). We used 500 watermarked samples per method ($\delta=2$, $\gamma=0.50$, Qwen3-8B).
+
+Table~\ref{tab:robustness} reports the mean z-score after each attack and two-sample KS test p-values comparing the z-score distributions. In 11/19 configurations, the distributions are statistically equivalent ($p > 0.05$). In all 8 non-equivalent cases, SBW retains \emph{more} watermark signal than KGW (higher mean z-score), never less. This is consistent with the hash function analysis in Section~\ref{sec:hash}: the Jenkins hash produces less autocorrelated green-list assignments, so attacks that disrupt local token sequences destroy fewer correlated ``runs'' of green tokens.
+
+\begin{table}[h]
+\caption{Robustness: KGW vs SBW under Attacks}
+\label{tab:robustness}
+\begin{center}
+\footnotesize
+\resizebox{\columnwidth}{!}{\input{tables/tab_robustness.tex}}
+\end{center}
+\vspace{-2mm}
+{\small 500 samples, $\delta=2$, $\gamma=0.50$. KGW/SBW: mean $z$-score. +: SBW retains more signal.}
+\end{table}
 
 \section{Proof of Detection Equivalence}
 \label{app:derivation}

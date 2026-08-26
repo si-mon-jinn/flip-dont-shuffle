@@ -1,0 +1,19 @@
+{
+  "metrics": {
+    "perplexity": {
+      "watermarked_mean": 6.007665706214666,
+      "watermarked_std": 1.97887448233275,
+      "non_watermarked_mean": 5.029070067828769,
+      "non_watermarked_std": 1.593080164395491,
+      "paired_ttest_pvalue": 6.500955840066648e-06
+    }
+  },
+  "detection": {
+    "watermarked_tpr": 0.87,
+    "non_watermarked_fpr": 0.0,
+    "mean_z_score_watermarked": 5.9227085692214185,
+    "mean_z_score_non_watermarked": 0.15055145212039725
+  },
+  "attacks": {},
+  "attack_metrics": {}
+}

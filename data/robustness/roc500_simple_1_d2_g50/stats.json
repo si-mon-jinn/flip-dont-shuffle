@@ -1,0 +1,13 @@
+{
+  "metrics": {
+    "perplexity": {}
+  },
+  "detection": {
+    "watermarked_tpr": 0.852,
+    "non_watermarked_fpr": 0.0,
+    "mean_z_score_watermarked": 5.796475521478281,
+    "mean_z_score_non_watermarked": 0.05172800713510271
+  },
+  "attacks": {},
+  "attack_metrics": {}
+}

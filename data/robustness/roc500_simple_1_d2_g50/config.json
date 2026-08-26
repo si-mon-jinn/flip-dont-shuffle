@@ -1,0 +1,50 @@
+{
+  "experiment_id": "roc500_simple_1_d2_g50",
+  "seed": 42,
+  "generation": {
+    "endpoint": "http://localhost:8008/v1",
+    "model": "Qwen/Qwen3-8B",
+    "max_tokens": 200,
+    "temperature": 1,
+    "watermark_params": {
+      "gamma": 0.5,
+      "delta": 2,
+      "seeding_scheme": "simple_1",
+      "hash_key": 15485863
+    }
+  },
+  "dataset": {
+    "name": "c4",
+    "split": "validation",
+    "prompt_tokens": 30,
+    "num_samples": 500
+  },
+  "detection": {
+    "tokenizer": "Qwen/Qwen3-8B",
+    "seeding_scheme": "simple_1",
+    "hash_key": 15485863,
+    "threshold_z": 4
+  },
+  "metrics": [],
+  "attacks": [
+    {"name": "random_char", "id": "random_char_1pct", "fraction": 0.01, "seed": 42},
+    {"name": "random_char", "id": "random_char_5pct", "fraction": 0.05, "seed": 42},
+    {"name": "random_char", "id": "random_char_10pct", "fraction": 0.10, "seed": 42},
+    {"name": "random_char", "id": "random_char_20pct", "fraction": 0.20, "seed": 42},
+    {"name": "char_delete", "id": "char_delete_5pct", "fraction": 0.05, "seed": 42},
+    {"name": "char_delete", "id": "char_delete_10pct", "fraction": 0.10, "seed": 42},
+    {"name": "char_delete", "id": "char_delete_20pct", "fraction": 0.20, "seed": 42},
+    {"name": "truncation", "id": "truncation_75pct", "fraction": 0.75},
+    {"name": "truncation", "id": "truncation_50pct", "fraction": 0.50},
+    {"name": "truncation", "id": "truncation_25pct", "fraction": 0.25},
+    {"name": "word_delete", "id": "word_delete_10pct", "fraction": 0.10, "seed": 42},
+    {"name": "word_delete", "id": "word_delete_20pct", "fraction": 0.20, "seed": 42},
+    {"name": "word_delete", "id": "word_delete_30pct", "fraction": 0.30, "seed": 42},
+    {"name": "word_reorder", "id": "word_reorder_full", "fraction": 1.0, "seed": 42},
+    {"name": "paraphrase", "id": "paraphrase_light", "level": "light", "model": "Qwen/Qwen3-4B"},
+    {"name": "paraphrase", "id": "paraphrase_moderate", "level": "moderate", "model": "Qwen/Qwen3-4B"},
+    {"name": "paraphrase", "id": "paraphrase_heavy", "level": "heavy", "model": "Qwen/Qwen3-4B"},
+    {"name": "mlm_substitute", "id": "mlm_10pct", "fraction": 0.10, "seed": 42},
+    {"name": "mlm_substitute", "id": "mlm_20pct", "fraction": 0.20, "seed": 42}
+  ]
+}
