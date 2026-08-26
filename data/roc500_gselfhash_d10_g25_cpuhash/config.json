@@ -1,0 +1,37 @@
+{
+  "experiment_id": "roc500_gselfhash_d10_g25_cpuhash",
+  "seed": 42,
+  "generation": {
+    "endpoint": "http://localhost:8008/v1",
+    "model": "Qwen/Qwen3-8B",
+    "max_tokens": 200,
+    "temperature": 1,
+    "watermark_params": {
+      "gamma": 0.25,
+      "delta": 10,
+      "seeding_scheme": "gpu-selfhash-cpuhash",
+      "hash_key": 15485863
+    }
+  },
+  "dataset": {
+    "name": "c4",
+    "split": "validation",
+    "prompt_tokens": 30,
+    "num_samples": 500
+  },
+  "detection": {
+    "tokenizer": "Qwen/Qwen3-8B",
+    "seeding_scheme": "gpu-selfhash-cpuhash",
+    "hash_key": 15485863,
+    "threshold_z": 4
+  },
+  "metrics": [
+    "perplexity",
+    "diversity"
+  ],
+  "attacks": [],
+  "reference_model": {
+    "endpoint": "https://api-gpt.jrc.ec.europa.eu/v1",
+    "model": "qwen3.5-27b-fp8"
+  }
+}

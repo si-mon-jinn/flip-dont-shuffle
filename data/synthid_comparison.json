@@ -1,0 +1,895 @@
+{
+  "metadata": {
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "gpu_memory_gb": 25.4,
+    "vocab_size": 151936,
+    "synthid_depth": 30,
+    "synthid_top_k": 40,
+    "sbw_gamma": 0.5,
+    "sbw_delta": 2.0,
+    "pytorch_version": "2.10.0+cu128",
+    "cuda_version": "12.8",
+    "warmup_iterations": 20,
+    "measurement_iterations": 200,
+    "date": "2026-05-22 09:36:58",
+    "note": "option_b uses top-k=40 (SynthID + KGW selfhash). option_a and cpu_schemes from original top-100 run."
+  },
+  "results": {
+    "option_a_full_vocab": {
+      "1": {
+        "synthid_compiled": {
+          "latency_mean_ms": 0.7201,
+          "latency_std_ms": 0.0105,
+          "latency_p50_ms": 0.7209,
+          "latency_p95_ms": 0.7291,
+          "latency_p99_ms": 0.7353,
+          "per_token_ms": 0.7201,
+          "peak_delta_mb": 0.0
+        },
+        "sbw_fused_simple_4": {
+          "latency_mean_ms": 0.0917,
+          "latency_std_ms": 0.004,
+          "latency_p50_ms": 0.0901,
+          "latency_p95_ms": 0.1004,
+          "latency_p99_ms": 0.1055,
+          "per_token_ms": 0.0917,
+          "peak_delta_mb": 0.0
+        },
+        "sbw_fused_selfhash_fullvocab": {
+          "latency_mean_ms": 0.0989,
+          "latency_std_ms": 0.0043,
+          "latency_p50_ms": 0.0973,
+          "latency_p95_ms": 0.1085,
+          "latency_p99_ms": 0.1178,
+          "per_token_ms": 0.0989,
+          "peak_delta_mb": 0.0
+        }
+      },
+      "2": {
+        "synthid_compiled": {
+          "latency_mean_ms": 1.1687,
+          "latency_std_ms": 0.0067,
+          "latency_p50_ms": 1.1674,
+          "latency_p95_ms": 1.1818,
+          "latency_p99_ms": 1.1909,
+          "per_token_ms": 0.5844,
+          "peak_delta_mb": 0.0
+        },
+        "sbw_fused_simple_4": {
+          "latency_mean_ms": 0.1057,
+          "latency_std_ms": 0.0067,
+          "latency_p50_ms": 0.1043,
+          "latency_p95_ms": 0.1175,
+          "latency_p99_ms": 0.1332,
+          "per_token_ms": 0.0529,
+          "peak_delta_mb": 0.0
+        },
+        "sbw_fused_selfhash_fullvocab": {
+          "latency_mean_ms": 0.1138,
+          "latency_std_ms": 0.0081,
+          "latency_p50_ms": 0.1117,
+          "latency_p95_ms": 0.1312,
+          "latency_p99_ms": 0.1444,
+          "per_token_ms": 0.0569,
+          "peak_delta_mb": 0.0
+        }
+      },
+      "4": {
+        "synthid_compiled": {
+          "latency_mean_ms": 1.997,
+          "latency_std_ms": 0.0218,
+          "latency_p50_ms": 1.9886,
+          "latency_p95_ms": 2.0335,
+          "latency_p99_ms": 2.0368,
+          "per_token_ms": 0.4992,
+          "peak_delta_mb": 0.0
+        },
+        "sbw_fused_simple_4": {
+          "latency_mean_ms": 0.103,
+          "latency_std_ms": 0.0059,
+          "latency_p50_ms": 0.1017,
+          "latency_p95_ms": 0.1139,
+          "latency_p99_ms": 0.1257,
+          "per_token_ms": 0.0257,
+          "peak_delta_mb": 0.0
+        },
+        "sbw_fused_selfhash_fullvocab": {
+          "latency_mean_ms": 0.1075,
+          "latency_std_ms": 0.0052,
+          "latency_p50_ms": 0.1055,
+          "latency_p95_ms": 0.1176,
+          "latency_p99_ms": 0.1219,
+          "per_token_ms": 0.0269,
+          "peak_delta_mb": 0.0
+        }
+      },
+      "8": {
+        "synthid_compiled": {
+          "latency_mean_ms": 3.5841,
+          "latency_std_ms": 0.0147,
+          "latency_p50_ms": 3.582,
+          "latency_p95_ms": 3.5982,
+          "latency_p99_ms": 3.6373,
+          "per_token_ms": 0.448,
+          "peak_delta_mb": 0.0
+        },
+        "sbw_fused_simple_4": {
+          "latency_mean_ms": 0.1016,
+          "latency_std_ms": 0.0042,
+          "latency_p50_ms": 0.1004,
+          "latency_p95_ms": 0.1096,
+          "latency_p99_ms": 0.1135,
+          "per_token_ms": 0.0127,
+          "peak_delta_mb": 0.0
+        },
+        "sbw_fused_selfhash_fullvocab": {
+          "latency_mean_ms": 0.1087,
+          "latency_std_ms": 0.0049,
+          "latency_p50_ms": 0.1073,
+          "latency_p95_ms": 0.1188,
+          "latency_p99_ms": 0.1243,
+          "per_token_ms": 0.0136,
+          "peak_delta_mb": 0.0
+        }
+      },
+      "16": {
+        "synthid_compiled": {
+          "latency_mean_ms": 6.8268,
+          "latency_std_ms": 0.0263,
+          "latency_p50_ms": 6.8198,
+          "latency_p95_ms": 6.8619,
+          "latency_p99_ms": 6.8799,
+          "per_token_ms": 0.4267,
+          "peak_delta_mb": 0.0
+        },
+        "sbw_fused_simple_4": {
+          "latency_mean_ms": 0.103,
+          "latency_std_ms": 0.0047,
+          "latency_p50_ms": 0.1024,
+          "latency_p95_ms": 0.1117,
+          "latency_p99_ms": 0.1168,
+          "per_token_ms": 0.0064,
+          "peak_delta_mb": 0.0
+        },
+        "sbw_fused_selfhash_fullvocab": {
+          "latency_mean_ms": 0.1078,
+          "latency_std_ms": 0.0037,
+          "latency_p50_ms": 0.1065,
+          "latency_p95_ms": 0.1157,
+          "latency_p99_ms": 0.1179,
+          "per_token_ms": 0.0067,
+          "peak_delta_mb": 0.0
+        }
+      },
+      "32": {
+        "synthid_compiled": {
+          "latency_mean_ms": 13.2687,
+          "latency_std_ms": 0.0413,
+          "latency_p50_ms": 13.2598,
+          "latency_p95_ms": 13.3162,
+          "latency_p99_ms": 13.352,
+          "per_token_ms": 0.4146,
+          "peak_delta_mb": 0.0
+        },
+        "sbw_fused_simple_4": {
+          "latency_mean_ms": 0.1217,
+          "latency_std_ms": 0.0049,
+          "latency_p50_ms": 0.1208,
+          "latency_p95_ms": 0.1311,
+          "latency_p99_ms": 0.1342,
+          "per_token_ms": 0.0038,
+          "peak_delta_mb": 0.0
+        },
+        "sbw_fused_selfhash_fullvocab": {
+          "latency_mean_ms": 0.1356,
+          "latency_std_ms": 0.0091,
+          "latency_p50_ms": 0.1341,
+          "latency_p95_ms": 0.1444,
+          "latency_p99_ms": 0.1598,
+          "per_token_ms": 0.0042,
+          "peak_delta_mb": 0.0
+        }
+      },
+      "64": {
+        "synthid_compiled": {
+          "latency_mean_ms": 26.1859,
+          "latency_std_ms": 0.0508,
+          "latency_p50_ms": 26.1816,
+          "latency_p95_ms": 26.2627,
+          "latency_p99_ms": 26.3056,
+          "per_token_ms": 0.4092,
+          "peak_delta_mb": 0.0
+        },
+        "sbw_fused_simple_4": {
+          "latency_mean_ms": 0.1672,
+          "latency_std_ms": 0.0045,
+          "latency_p50_ms": 0.1666,
+          "latency_p95_ms": 0.1752,
+          "latency_p99_ms": 0.1812,
+          "per_token_ms": 0.0026,
+          "peak_delta_mb": 0.0
+        },
+        "sbw_fused_selfhash_fullvocab": {
+          "latency_mean_ms": 0.191,
+          "latency_std_ms": 0.0043,
+          "latency_p50_ms": 0.1894,
+          "latency_p95_ms": 0.1987,
+          "latency_p99_ms": 0.2048,
+          "per_token_ms": 0.003,
+          "peak_delta_mb": 0.0
+        }
+      },
+      "128": {
+        "synthid_compiled": {
+          "latency_mean_ms": 51.9023,
+          "latency_std_ms": 0.0538,
+          "latency_p50_ms": 51.8979,
+          "latency_p95_ms": 51.9815,
+          "latency_p99_ms": 52.0674,
+          "per_token_ms": 0.4055,
+          "peak_delta_mb": 0.0
+        },
+        "sbw_fused_simple_4": {
+          "latency_mean_ms": 0.2629,
+          "latency_std_ms": 0.0049,
+          "latency_p50_ms": 0.2621,
+          "latency_p95_ms": 0.2714,
+          "latency_p99_ms": 0.2763,
+          "per_token_ms": 0.0021,
+          "peak_delta_mb": 0.0
+        },
+        "sbw_fused_selfhash_fullvocab": {
+          "latency_mean_ms": 0.3201,
+          "latency_std_ms": 0.0072,
+          "latency_p50_ms": 0.3215,
+          "latency_p95_ms": 0.3308,
+          "latency_p99_ms": 0.34,
+          "per_token_ms": 0.0025,
+          "peak_delta_mb": 0.0
+        }
+      },
+      "256": {
+        "synthid_compiled": {
+          "latency_mean_ms": 103.2532,
+          "latency_std_ms": 0.0852,
+          "latency_p50_ms": 103.2437,
+          "latency_p95_ms": 103.3886,
+          "latency_p99_ms": 103.4933,
+          "per_token_ms": 0.4033,
+          "peak_delta_mb": 0.0
+        },
+        "sbw_fused_simple_4": {
+          "latency_mean_ms": 0.4463,
+          "latency_std_ms": 0.0052,
+          "latency_p50_ms": 0.4454,
+          "latency_p95_ms": 0.4547,
+          "latency_p99_ms": 0.4636,
+          "per_token_ms": 0.0017,
+          "peak_delta_mb": 0.0
+        },
+        "sbw_fused_selfhash_fullvocab": {
+          "latency_mean_ms": 0.5943,
+          "latency_std_ms": 0.0128,
+          "latency_p50_ms": 0.599,
+          "latency_p95_ms": 0.6072,
+          "latency_p99_ms": 0.6113,
+          "per_token_ms": 0.0023,
+          "peak_delta_mb": 0.0
+        }
+      },
+      "512": {
+        "synthid_compiled": {
+          "latency_mean_ms": 206.0104,
+          "latency_std_ms": 0.1075,
+          "latency_p50_ms": 205.9954,
+          "latency_p95_ms": 206.195,
+          "latency_p99_ms": 206.3397,
+          "per_token_ms": 0.4024,
+          "peak_delta_mb": 0.0
+        },
+        "sbw_fused_simple_4": {
+          "latency_mean_ms": 0.8162,
+          "latency_std_ms": 0.0151,
+          "latency_p50_ms": 0.8142,
+          "latency_p95_ms": 0.8244,
+          "latency_p99_ms": 0.8388,
+          "per_token_ms": 0.0016,
+          "peak_delta_mb": 0.0
+        },
+        "sbw_fused_selfhash_fullvocab": {
+          "latency_mean_ms": 1.1514,
+          "latency_std_ms": 0.0202,
+          "latency_p50_ms": 1.154,
+          "latency_p95_ms": 1.1735,
+          "latency_p99_ms": 1.1776,
+          "per_token_ms": 0.0022,
+          "peak_delta_mb": 0.0
+        }
+      }
+    },
+    "option_b_topk40": {
+      "1": {
+        "synthid_compiled_topk40": {
+          "latency_mean_ms": 0.286,
+          "latency_std_ms": 0.0103,
+          "latency_p50_ms": 0.2876,
+          "latency_p95_ms": 0.3011,
+          "latency_p99_ms": 0.3166,
+          "per_token_ms": 0.286,
+          "peak_delta_mb": 0.083456
+        },
+        "kgw_selfhash_40": {
+          "latency_mean_ms": 14.09,
+          "latency_std_ms": 0.2177,
+          "latency_p50_ms": 14.1313,
+          "latency_p95_ms": 14.2905,
+          "latency_p99_ms": 14.4889,
+          "per_token_ms": 14.09,
+          "peak_delta_mb": 10.536448
+        },
+        "sbw_fused_simple_4_40": {
+          "latency_mean_ms": 0.1989,
+          "latency_std_ms": 0.0063,
+          "latency_p50_ms": 0.1976,
+          "latency_p95_ms": 0.2099,
+          "latency_p99_ms": 0.2151,
+          "per_token_ms": 0.1989,
+          "peak_delta_mb": 0.0
+        },
+        "sbw_fused_selfhash_40": {
+          "latency_mean_ms": 0.192,
+          "latency_std_ms": 0.0042,
+          "latency_p50_ms": 0.1905,
+          "latency_p95_ms": 0.1987,
+          "latency_p99_ms": 0.2059,
+          "per_token_ms": 0.192,
+          "peak_delta_mb": 0.0
+        }
+      },
+      "2": {
+        "synthid_compiled_topk40": {
+          "latency_mean_ms": 0.2914,
+          "latency_std_ms": 0.0068,
+          "latency_p50_ms": 0.2898,
+          "latency_p95_ms": 0.3043,
+          "latency_p99_ms": 0.3062,
+          "per_token_ms": 0.1457,
+          "peak_delta_mb": 0.162304
+        },
+        "kgw_selfhash_40": {
+          "latency_mean_ms": 27.9851,
+          "latency_std_ms": 0.3916,
+          "latency_p50_ms": 27.943,
+          "latency_p95_ms": 28.4529,
+          "latency_p99_ms": 29.1062,
+          "per_token_ms": 13.9925,
+          "peak_delta_mb": 10.688512
+        },
+        "sbw_fused_simple_4_40": {
+          "latency_mean_ms": 0.2077,
+          "latency_std_ms": 0.0096,
+          "latency_p50_ms": 0.2058,
+          "latency_p95_ms": 0.2161,
+          "latency_p99_ms": 0.2603,
+          "per_token_ms": 0.1038,
+          "peak_delta_mb": 0.0
+        },
+        "sbw_fused_selfhash_40": {
+          "latency_mean_ms": 0.2083,
+          "latency_std_ms": 0.0045,
+          "latency_p50_ms": 0.2068,
+          "latency_p95_ms": 0.2161,
+          "latency_p99_ms": 0.2222,
+          "per_token_ms": 0.1041,
+          "peak_delta_mb": 0.0
+        }
+      },
+      "4": {
+        "synthid_compiled_topk40": {
+          "latency_mean_ms": 0.2898,
+          "latency_std_ms": 0.0081,
+          "latency_p50_ms": 0.2877,
+          "latency_p95_ms": 0.3028,
+          "latency_p99_ms": 0.3193,
+          "per_token_ms": 0.0724,
+          "peak_delta_mb": 0.257536
+        },
+        "kgw_selfhash_40": {
+          "latency_mean_ms": 55.7824,
+          "latency_std_ms": 0.48,
+          "latency_p50_ms": 55.7752,
+          "latency_p95_ms": 56.5367,
+          "latency_p99_ms": 57.1078,
+          "per_token_ms": 13.9456,
+          "peak_delta_mb": 11.756544
+        },
+        "sbw_fused_simple_4_40": {
+          "latency_mean_ms": 0.2108,
+          "latency_std_ms": 0.0058,
+          "latency_p50_ms": 0.2089,
+          "latency_p95_ms": 0.2223,
+          "latency_p99_ms": 0.2255,
+          "per_token_ms": 0.0527,
+          "peak_delta_mb": 0.0
+        },
+        "sbw_fused_selfhash_40": {
+          "latency_mean_ms": 0.2123,
+          "latency_std_ms": 0.0046,
+          "latency_p50_ms": 0.2099,
+          "latency_p95_ms": 0.22,
+          "latency_p99_ms": 0.2284,
+          "per_token_ms": 0.0531,
+          "peak_delta_mb": 0.0
+        }
+      },
+      "8": {
+        "synthid_compiled_topk40": {
+          "latency_mean_ms": 0.2948,
+          "latency_std_ms": 0.0083,
+          "latency_p50_ms": 0.2927,
+          "latency_p95_ms": 0.311,
+          "latency_p99_ms": 0.3123,
+          "per_token_ms": 0.0369,
+          "peak_delta_mb": 0.265216
+        },
+        "kgw_selfhash_40": {
+          "latency_mean_ms": 112.0294,
+          "latency_std_ms": 0.7741,
+          "latency_p50_ms": 112.187,
+          "latency_p95_ms": 113.0191,
+          "latency_p99_ms": 113.3369,
+          "per_token_ms": 14.0037,
+          "peak_delta_mb": 12.416
+        },
+        "sbw_fused_simple_4_40": {
+          "latency_mean_ms": 0.215,
+          "latency_std_ms": 0.0047,
+          "latency_p50_ms": 0.2131,
+          "latency_p95_ms": 0.2232,
+          "latency_p99_ms": 0.2305,
+          "per_token_ms": 0.0269,
+          "peak_delta_mb": 0.0
+        },
+        "sbw_fused_selfhash_40": {
+          "latency_mean_ms": 0.2174,
+          "latency_std_ms": 0.0032,
+          "latency_p50_ms": 0.2161,
+          "latency_p95_ms": 0.2253,
+          "latency_p99_ms": 0.2264,
+          "per_token_ms": 0.0272,
+          "peak_delta_mb": 0.0
+        }
+      },
+      "16": {
+        "synthid_compiled_topk40": {
+          "latency_mean_ms": 0.2955,
+          "latency_std_ms": 0.0102,
+          "latency_p50_ms": 0.2948,
+          "latency_p95_ms": 0.3133,
+          "latency_p99_ms": 0.3238,
+          "per_token_ms": 0.0185,
+          "peak_delta_mb": 0.276992
+        },
+        "kgw_selfhash_40": {
+          "latency_mean_ms": 223.0137,
+          "latency_std_ms": 1.2904,
+          "latency_p50_ms": 223.1506,
+          "latency_p95_ms": 224.9539,
+          "latency_p99_ms": 225.7274,
+          "per_token_ms": 13.9384,
+          "peak_delta_mb": 13.071872
+        },
+        "sbw_fused_simple_4_40": {
+          "latency_mean_ms": 0.2736,
+          "latency_std_ms": 0.0027,
+          "latency_p50_ms": 0.2724,
+          "latency_p95_ms": 0.2796,
+          "latency_p99_ms": 0.2816,
+          "per_token_ms": 0.0171,
+          "peak_delta_mb": 0.0
+        },
+        "sbw_fused_selfhash_40": {
+          "latency_mean_ms": 0.2785,
+          "latency_std_ms": 0.0054,
+          "latency_p50_ms": 0.2765,
+          "latency_p95_ms": 0.2857,
+          "latency_p99_ms": 0.2991,
+          "per_token_ms": 0.0174,
+          "peak_delta_mb": 0.0
+        }
+      },
+      "32": {
+        "synthid_compiled_topk40": {
+          "latency_mean_ms": 0.2844,
+          "latency_std_ms": 0.0076,
+          "latency_p50_ms": 0.2836,
+          "latency_p95_ms": 0.3011,
+          "latency_p99_ms": 0.3041,
+          "per_token_ms": 0.0089,
+          "peak_delta_mb": 0.31744
+        },
+        "kgw_selfhash_40": {
+          "latency_mean_ms": 444.5932,
+          "latency_std_ms": 2.0451,
+          "latency_p50_ms": 444.9489,
+          "latency_p95_ms": 447.4058,
+          "latency_p99_ms": 447.858,
+          "per_token_ms": 13.8935,
+          "peak_delta_mb": 24.30976
+        },
+        "sbw_fused_simple_4_40": {
+          "latency_mean_ms": 0.3654,
+          "latency_std_ms": 0.0031,
+          "latency_p50_ms": 0.3645,
+          "latency_p95_ms": 0.3717,
+          "latency_p99_ms": 0.3748,
+          "per_token_ms": 0.0114,
+          "peak_delta_mb": 0.0
+        },
+        "sbw_fused_selfhash_40": {
+          "latency_mean_ms": 0.3688,
+          "latency_std_ms": 0.0036,
+          "latency_p50_ms": 0.3676,
+          "latency_p95_ms": 0.3758,
+          "latency_p99_ms": 0.3808,
+          "per_token_ms": 0.0115,
+          "peak_delta_mb": 0.0
+        }
+      },
+      "64": {
+        "synthid_compiled_topk40": {
+          "latency_mean_ms": 0.4743,
+          "latency_std_ms": 0.0021,
+          "latency_p50_ms": 0.4741,
+          "latency_p95_ms": 0.4772,
+          "latency_p99_ms": 0.4823,
+          "per_token_ms": 0.0074,
+          "peak_delta_mb": 0.432128
+        },
+        "kgw_selfhash_40": {
+          "latency_mean_ms": 892.4533,
+          "latency_std_ms": 4.5871,
+          "latency_p50_ms": 893.6559,
+          "latency_p95_ms": 898.4377,
+          "latency_p99_ms": 899.5345,
+          "per_token_ms": 13.9446,
+          "peak_delta_mb": 49.569792
+        },
+        "sbw_fused_simple_4_40": {
+          "latency_mean_ms": 0.6146,
+          "latency_std_ms": 0.0039,
+          "latency_p50_ms": 0.6136,
+          "latency_p95_ms": 0.6216,
+          "latency_p99_ms": 0.6275,
+          "per_token_ms": 0.0096,
+          "peak_delta_mb": 0.0
+        },
+        "sbw_fused_selfhash_40": {
+          "latency_mean_ms": 0.6197,
+          "latency_std_ms": 0.0042,
+          "latency_p50_ms": 0.6185,
+          "latency_p95_ms": 0.6267,
+          "latency_p99_ms": 0.6346,
+          "per_token_ms": 0.0097,
+          "peak_delta_mb": 0.0
+        }
+      },
+      "128": {
+        "synthid_compiled_topk40": {
+          "latency_mean_ms": 0.7125,
+          "latency_std_ms": 0.0056,
+          "latency_p50_ms": 0.7148,
+          "latency_p95_ms": 0.7199,
+          "latency_p99_ms": 0.7229,
+          "per_token_ms": 0.0056,
+          "peak_delta_mb": 0.862208
+        },
+        "kgw_selfhash_40": {
+          "latency_mean_ms": 1787.5325,
+          "latency_std_ms": 9.0432,
+          "latency_p50_ms": 1790.5642,
+          "latency_p95_ms": 1799.9527,
+          "latency_p99_ms": 1800.9558,
+          "per_token_ms": 13.9651,
+          "peak_delta_mb": 97.23904
+        },
+        "sbw_fused_simple_4_40": {
+          "latency_mean_ms": 0.9472,
+          "latency_std_ms": 0.0034,
+          "latency_p50_ms": 0.9462,
+          "latency_p95_ms": 0.9524,
+          "latency_p99_ms": 0.9544,
+          "per_token_ms": 0.0074,
+          "peak_delta_mb": 0.0
+        },
+        "sbw_fused_selfhash_40": {
+          "latency_mean_ms": 0.9558,
+          "latency_std_ms": 0.1192,
+          "latency_p50_ms": 0.9471,
+          "latency_p95_ms": 0.9541,
+          "latency_p99_ms": 0.9595,
+          "per_token_ms": 0.0075,
+          "peak_delta_mb": 0.0
+        }
+      },
+      "256": {
+        "synthid_compiled_topk40": {
+          "latency_mean_ms": 1.2254,
+          "latency_std_ms": 0.003,
+          "latency_p50_ms": 1.2247,
+          "latency_p95_ms": 1.2309,
+          "latency_p99_ms": 1.235,
+          "per_token_ms": 0.0048,
+          "peak_delta_mb": 2.116096
+        },
+        "kgw_selfhash_40": {
+          "latency_mean_ms": 3572.0726,
+          "latency_std_ms": 15.849,
+          "latency_p50_ms": 3577.5078,
+          "latency_p95_ms": 3589.1213,
+          "latency_p99_ms": 3594.1927,
+          "per_token_ms": 13.9534,
+          "peak_delta_mb": 194.47808
+        },
+        "sbw_fused_simple_4_40": {
+          "latency_mean_ms": 1.6494,
+          "latency_std_ms": 0.004,
+          "latency_p50_ms": 1.6486,
+          "latency_p95_ms": 1.6558,
+          "latency_p99_ms": 1.66,
+          "per_token_ms": 0.0064,
+          "peak_delta_mb": 0.0
+        },
+        "sbw_fused_selfhash_40": {
+          "latency_mean_ms": 1.6617,
+          "latency_std_ms": 0.0195,
+          "latency_p50_ms": 1.6599,
+          "latency_p95_ms": 1.6661,
+          "latency_p99_ms": 1.6708,
+          "per_token_ms": 0.0065,
+          "peak_delta_mb": 0.0
+        }
+      },
+      "512": {
+        "synthid_compiled_topk40": {
+          "latency_mean_ms": 2.3041,
+          "latency_std_ms": 0.0036,
+          "latency_p50_ms": 2.305,
+          "latency_p95_ms": 2.3089,
+          "latency_p99_ms": 2.3101,
+          "per_token_ms": 0.0045,
+          "peak_delta_mb": 3.444224
+        },
+        "kgw_selfhash_40": {
+          "latency_mean_ms": 7145.1606,
+          "latency_std_ms": 28.9819,
+          "latency_p50_ms": 7150.7195,
+          "latency_p95_ms": 7183.9841,
+          "latency_p99_ms": 7190.5636,
+          "per_token_ms": 13.9554,
+          "peak_delta_mb": 388.95616
+        },
+        "sbw_fused_simple_4_40": {
+          "latency_mean_ms": 3.0898,
+          "latency_std_ms": 0.0155,
+          "latency_p50_ms": 3.0874,
+          "latency_p95_ms": 3.0966,
+          "latency_p99_ms": 3.1099,
+          "per_token_ms": 0.006,
+          "peak_delta_mb": 0.0
+        },
+        "sbw_fused_selfhash_40": {
+          "latency_mean_ms": 3.0996,
+          "latency_std_ms": 0.0064,
+          "latency_p50_ms": 3.099,
+          "latency_p95_ms": 3.1099,
+          "latency_p99_ms": 3.114,
+          "per_token_ms": 0.0061,
+          "peak_delta_mb": 0.0
+        }
+      }
+    },
+    "cpu_schemes": {
+      "1": {
+        "cpu_simple_4": {
+          "latency_mean_ms": 0.2647,
+          "latency_std_ms": 0.006,
+          "latency_p50_ms": 0.2643,
+          "latency_p95_ms": 0.2764,
+          "latency_p99_ms": 0.2816,
+          "per_token_ms": 0.2647,
+          "peak_delta_mb": 7.497216
+        },
+        "cpu_selfhash_100": {
+          "latency_mean_ms": 13.62,
+          "latency_std_ms": 0.1698,
+          "latency_p50_ms": 13.6334,
+          "latency_p95_ms": 13.8962,
+          "latency_p99_ms": 13.9706,
+          "per_token_ms": 13.62,
+          "peak_delta_mb": 10.536448
+        }
+      },
+      "2": {
+        "cpu_simple_4": {
+          "latency_mean_ms": 0.4169,
+          "latency_std_ms": 0.0076,
+          "latency_p50_ms": 0.4152,
+          "latency_p95_ms": 0.4291,
+          "latency_p99_ms": 0.4394,
+          "per_token_ms": 0.2085,
+          "peak_delta_mb": 8.864768
+        },
+        "cpu_selfhash_100": {
+          "latency_mean_ms": 27.4386,
+          "latency_std_ms": 0.3773,
+          "latency_p50_ms": 27.408,
+          "latency_p95_ms": 27.9788,
+          "latency_p99_ms": 28.2501,
+          "per_token_ms": 13.7193,
+          "peak_delta_mb": 10.688512
+        }
+      },
+      "4": {
+        "cpu_simple_4": {
+          "latency_mean_ms": 0.7061,
+          "latency_std_ms": 0.0102,
+          "latency_p50_ms": 0.7078,
+          "latency_p95_ms": 0.7191,
+          "latency_p99_ms": 0.7301,
+          "per_token_ms": 0.1765,
+          "peak_delta_mb": 9.168384
+        },
+        "cpu_selfhash_100": {
+          "latency_mean_ms": 54.8423,
+          "latency_std_ms": 0.5472,
+          "latency_p50_ms": 54.8336,
+          "latency_p95_ms": 55.7226,
+          "latency_p99_ms": 56.0915,
+          "per_token_ms": 13.7106,
+          "peak_delta_mb": 11.756544
+        }
+      },
+      "8": {
+        "cpu_simple_4": {
+          "latency_mean_ms": 1.2757,
+          "latency_std_ms": 0.0206,
+          "latency_p50_ms": 1.2689,
+          "latency_p95_ms": 1.3115,
+          "latency_p99_ms": 1.323,
+          "per_token_ms": 0.1595,
+          "peak_delta_mb": 10.592256
+        },
+        "cpu_selfhash_100": {
+          "latency_mean_ms": 109.7884,
+          "latency_std_ms": 0.7814,
+          "latency_p50_ms": 109.643,
+          "latency_p95_ms": 111.2242,
+          "latency_p99_ms": 111.8575,
+          "per_token_ms": 13.7235,
+          "peak_delta_mb": 12.416
+        }
+      },
+      "16": {
+        "cpu_simple_4": {
+          "latency_mean_ms": 2.4112,
+          "latency_std_ms": 0.0396,
+          "latency_p50_ms": 2.4008,
+          "latency_p95_ms": 2.4648,
+          "latency_p99_ms": 2.4765,
+          "per_token_ms": 0.1507,
+          "peak_delta_mb": 12.15488
+        },
+        "cpu_selfhash_100": {
+          "latency_mean_ms": 219.693,
+          "latency_std_ms": 0.9238,
+          "latency_p50_ms": 219.5942,
+          "latency_p95_ms": 221.2961,
+          "latency_p99_ms": 221.9851,
+          "per_token_ms": 13.7308,
+          "peak_delta_mb": 13.631488
+        }
+      },
+      "32": {
+        "cpu_simple_4": {
+          "latency_mean_ms": 4.6933,
+          "latency_std_ms": 0.0494,
+          "latency_p50_ms": 4.6904,
+          "latency_p95_ms": 4.779,
+          "latency_p99_ms": 4.7975,
+          "per_token_ms": 0.1467,
+          "peak_delta_mb": 24.30976
+        },
+        "cpu_selfhash_100": {
+          "latency_mean_ms": 438.479,
+          "latency_std_ms": 1.5228,
+          "latency_p50_ms": 438.4941,
+          "latency_p95_ms": 441.1924,
+          "latency_p99_ms": 442.743,
+          "per_token_ms": 13.7025,
+          "peak_delta_mb": 24.30976
+        }
+      },
+      "64": {
+        "cpu_simple_4": {
+          "latency_mean_ms": 9.2811,
+          "latency_std_ms": 0.0966,
+          "latency_p50_ms": 9.2591,
+          "latency_p95_ms": 9.4511,
+          "latency_p99_ms": 9.5018,
+          "per_token_ms": 0.145,
+          "peak_delta_mb": 49.569792
+        },
+        "cpu_selfhash_100": {
+          "latency_mean_ms": 882.3421,
+          "latency_std_ms": 4.1125,
+          "latency_p50_ms": 882.6971,
+          "latency_p95_ms": 888.735,
+          "latency_p99_ms": 890.4424,
+          "per_token_ms": 13.7866,
+          "peak_delta_mb": 49.569792
+        }
+      },
+      "128": {
+        "cpu_simple_4": {
+          "latency_mean_ms": 18.6053,
+          "latency_std_ms": 0.1445,
+          "latency_p50_ms": 18.6056,
+          "latency_p95_ms": 18.8455,
+          "latency_p99_ms": 18.9258,
+          "per_token_ms": 0.1454,
+          "peak_delta_mb": 97.23904
+        },
+        "cpu_selfhash_100": {
+          "latency_mean_ms": 1765.4866,
+          "latency_std_ms": 9.2426,
+          "latency_p50_ms": 1765.1497,
+          "latency_p95_ms": 1779.7221,
+          "latency_p99_ms": 1783.3572,
+          "per_token_ms": 13.7929,
+          "peak_delta_mb": 97.23904
+        }
+      },
+      "256": {
+        "cpu_simple_4": {
+          "latency_mean_ms": 37.5226,
+          "latency_std_ms": 0.2192,
+          "latency_p50_ms": 37.5332,
+          "latency_p95_ms": 37.8401,
+          "latency_p99_ms": 37.9782,
+          "per_token_ms": 0.1466,
+          "peak_delta_mb": 195.428352
+        },
+        "cpu_selfhash_100": {
+          "latency_mean_ms": 3539.754,
+          "latency_std_ms": 21.8701,
+          "latency_p50_ms": 3541.6735,
+          "latency_p95_ms": 3573.071,
+          "latency_p99_ms": 3580.6852,
+          "per_token_ms": 13.8272,
+          "peak_delta_mb": 195.428352
+        }
+      },
+      "512": {
+        "cpu_simple_4": {
+          "latency_mean_ms": 73.9836,
+          "latency_std_ms": 0.4158,
+          "latency_p50_ms": 73.9399,
+          "latency_p95_ms": 74.6928,
+          "latency_p99_ms": 75.0108,
+          "per_token_ms": 0.1445,
+          "peak_delta_mb": 388.95616
+        },
+        "cpu_selfhash_100": {
+          "latency_mean_ms": 7010.2064,
+          "latency_std_ms": 30.4758,
+          "latency_p50_ms": 7005.8044,
+          "latency_p95_ms": 7069.4162,
+          "latency_p99_ms": 7082.374,
+          "per_token_ms": 13.6918,
+          "peak_delta_mb": 388.95616
+        }
+      }
+    }
+  }
+}

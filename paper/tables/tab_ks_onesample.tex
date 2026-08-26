@@ -1,0 +1,19 @@
+\begin{tabular}{@{}cccccc@{}}
+\toprule
+$\gamma$ & Scheme & Mean & Std & KS & p-value \\
+\midrule
+\multicolumn{6}{c}{\textit{Without self-salt}} \\
+\midrule
+0.25 & \texttt{simple\_1} & +0.120 & 0.991 & 0.062 & 8.65e-14 \\
+0.25 & \texttt{SBW-1} & +0.091 & 0.965 & 0.057 & 7.29e-12 \\
+0.50 & \texttt{simple\_1} & +0.053 & 1.036 & 0.053 & 2.16e-10 \\
+0.50 & \texttt{SBW-1} & +0.138 & 0.995 & 0.068 & 1.05e-16 \\
+\midrule
+\multicolumn{6}{c}{\textit{With self-salt}} \\
+\midrule
+0.25 & \texttt{selfhash} & $-$0.518 & 1.155 & 0.239 & $< 10^{-267}$ \\
+0.25 & \texttt{SBW-ss} & $-$0.272 & 1.159 & 0.137 & $< 10^{-66}$ \\
+0.50 & \texttt{selfhash} & $-$0.205 & 1.262 & 0.139 & $< 10^{-68}$ \\
+0.50 & \texttt{SBW-ss} & $-$0.096 & 1.140 & 0.087 & 7.02e-27 \\
+\bottomrule
+\end{tabular}

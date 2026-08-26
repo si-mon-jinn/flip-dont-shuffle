@@ -1,0 +1,23 @@
+# Requirements for figure/table generation (reproduce.sh)
+#
+# For profiling benchmarks, run reproduce_profiling.sh which
+# automatically creates the required virtual environments.
+#
+# Install these with: pip install -r requirements.txt
+
+# Core dependencies
+sbw>=1.0.0
+waterpipe>=1.0.0
+
+# Scientific computing
+numpy>=1.24.0
+scipy>=1.10.0
+matplotlib>=3.7.0
+
+# ML/NLP
+torch>=2.0.0
+transformers>=4.35.0
+scikit-learn>=1.3.0
+
+# Utilities
+tqdm>=4.65.0

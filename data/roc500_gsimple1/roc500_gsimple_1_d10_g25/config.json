@@ -1,0 +1,30 @@
+{
+  "experiment_id": "roc500_gsimple_1_d10_g25",
+  "seed": 42,
+  "generation": {
+    "endpoint": "http://localhost:8008/v1",
+    "model": "Qwen/Qwen3-8B",
+    "max_tokens": 200,
+    "temperature": 1.0,
+    "watermark_params": {
+      "gamma": 0.25,
+      "delta": 10.0,
+      "seeding_scheme": "gpu-simple_1",
+      "hash_key": 15485863
+    }
+  },
+  "dataset": {
+    "name": "c4",
+    "split": "validation",
+    "prompt_tokens": 30,
+    "num_samples": 500
+  },
+  "detection": {
+    "tokenizer": "Qwen/Qwen3-8B",
+    "seeding_scheme": "gpu-simple_1",
+    "hash_key": 15485863,
+    "threshold_z": 4.0
+  },
+  "metrics": [],
+  "attacks": []
+}

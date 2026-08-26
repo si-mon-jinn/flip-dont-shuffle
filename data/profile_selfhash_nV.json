@@ -1,0 +1,193 @@
+{
+  "metadata": {
+    "tool": "profile_logits_processor",
+    "date": "2026-05-08 09:20:30",
+    "model": "synthetic",
+    "vocab_size": 151669,
+    "num_iterations": 100,
+    "configs": [
+      {
+        "seeding_scheme": "gpu-selfhash-fullvocab",
+        "gamma": 0.5,
+        "delta": 2.0,
+        "hash_key": 15485863,
+        "label": "gpu-selfhash-fullvocab"
+      }
+    ],
+    "git_commit": "bc7b28920eb687570a2a77974a6e368905d72549",
+    "git_dirty": false
+  },
+  "results": {
+    "1": {
+      "baseline": {
+        "per_item_ms": 0.010569747537374496,
+        "per_token_ms": 0.010569747537374496
+      },
+      "gpu-selfhash-fullvocab": {
+        "per_item_ms": 1.5040870010852814,
+        "per_token_ms": 1.5040870010852814,
+        "profile": {
+          "total": {
+            "mean_ms": 1.282146219164133,
+            "median_ms": 1.2805769219994545,
+            "std_ms": 0.008250146518921834,
+            "total_ms": 128.2146219164133,
+            "count": 100
+          }
+        }
+      }
+    },
+    "4": {
+      "baseline": {
+        "per_item_ms": 0.01051308587193489,
+        "per_token_ms": 0.0026282714679837227
+      },
+      "gpu-selfhash-fullvocab": {
+        "per_item_ms": 1.7926137335598469,
+        "per_token_ms": 0.4481534333899617,
+        "profile": {
+          "total": {
+            "mean_ms": 1.4605121314525604,
+            "median_ms": 1.4597009867429733,
+            "std_ms": 0.004229520828926049,
+            "total_ms": 146.05121314525604,
+            "count": 100
+          }
+        }
+      }
+    },
+    "8": {
+      "baseline": {
+        "per_item_ms": 0.010490026324987411,
+        "per_token_ms": 0.0013112532906234264
+      },
+      "gpu-selfhash-fullvocab": {
+        "per_item_ms": 3.2902309857308865,
+        "per_token_ms": 0.4112788732163608,
+        "profile": {
+          "total": {
+            "mean_ms": 2.824967745691538,
+            "median_ms": 2.8243567794561386,
+            "std_ms": 0.003564982578050318,
+            "total_ms": 282.4967745691538,
+            "count": 100
+          }
+        }
+      }
+    },
+    "16": {
+      "baseline": {
+        "per_item_ms": 0.010430514812469482,
+        "per_token_ms": 0.0006519071757793427
+      },
+      "gpu-selfhash-fullvocab": {
+        "per_item_ms": 6.2923381850123405,
+        "per_token_ms": 0.3932711365632713,
+        "profile": {
+          "total": {
+            "mean_ms": 5.548810344189405,
+            "median_ms": 5.548181943595409,
+            "std_ms": 0.005090786383998032,
+            "total_ms": 554.8810344189405,
+            "count": 100
+          }
+        }
+      }
+    },
+    "32": {
+      "baseline": {
+        "per_item_ms": 0.010729096829891205,
+        "per_token_ms": 0.00033528427593410015
+      },
+      "gpu-selfhash-fullvocab": {
+        "per_item_ms": 12.201894875615835,
+        "per_token_ms": 0.38130921486299485,
+        "profile": {
+          "total": {
+            "mean_ms": 10.899611469358206,
+            "median_ms": 10.899313725531101,
+            "std_ms": 0.005676979712243939,
+            "total_ms": 1089.9611469358206,
+            "count": 100
+          }
+        }
+      }
+    },
+    "64": {
+      "baseline": {
+        "per_item_ms": 0.011527054011821747,
+        "per_token_ms": 0.0001801102189347148
+      },
+      "gpu-selfhash-fullvocab": {
+        "per_item_ms": 24.007142577320337,
+        "per_token_ms": 0.37511160277063027,
+        "profile": {
+          "total": {
+            "mean_ms": 21.581862792372704,
+            "median_ms": 21.581143140792847,
+            "std_ms": 0.0087313045698798,
+            "total_ms": 2158.1862792372704,
+            "count": 100
+          }
+        }
+      }
+    },
+    "128": {
+      "baseline": {
+        "per_item_ms": 0.011417586356401443,
+        "per_token_ms": 8.919989340938628e-05
+      },
+      "gpu-selfhash-fullvocab": {
+        "per_item_ms": 47.656675316393375,
+        "per_token_ms": 0.37231777590932325,
+        "profile": {
+          "total": {
+            "mean_ms": 42.99779975786805,
+            "median_ms": 42.997692711651325,
+            "std_ms": 0.013253890524347948,
+            "total_ms": 4299.779975786805,
+            "count": 100
+          }
+        }
+      }
+    },
+    "256": {
+      "baseline": {
+        "per_item_ms": 0.012646447867155075,
+        "per_token_ms": 4.940018698107451e-05
+      },
+      "gpu-selfhash-fullvocab": {
+        "per_item_ms": 95.02379167824984,
+        "per_token_ms": 0.3711866862431634,
+        "profile": {
+          "total": {
+            "mean_ms": 85.87808595970273,
+            "median_ms": 85.87172534316778,
+            "std_ms": 0.04957274693719112,
+            "total_ms": 8587.808595970273,
+            "count": 100
+          }
+        }
+      }
+    },
+    "512": {
+      "baseline": {
+        "per_item_ms": 0.014775115996599197,
+        "per_token_ms": 2.8857648430857807e-05
+      },
+      "gpu-selfhash-fullvocab": {
+        "per_item_ms": 192.336698602885,
+        "per_token_ms": 0.3756576144587598,
+        "profile": {
+          "total": {
+            "mean_ms": 174.20515665784478,
+            "median_ms": 174.19668100774288,
+            "std_ms": 0.06260406920704492,
+            "total_ms": 17420.51566578448,
+            "count": 100
+          }
+        }
+      }
+    }
+  }
+}
