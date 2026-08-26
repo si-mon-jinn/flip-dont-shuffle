@@ -56,6 +56,8 @@ Different methods exist to apply a watermark during text generation~\cite{liu202
 
 \textbf{Contributions.} We introduce \emph{Stateless Bernoulli Watermarking} (SBW), which replaces KGW's vocabulary permutation and SynthID's tournament passes with independent per-token Bernoulli trials: a local, stateless decision. We prove this preserves identical detection guarantees under the standard null model (Section~\ref{sec:theory}); experiments confirm this equivalence holds empirically, where SBW and KGW deviate identically from the idealized $\mathcal{N}(0,1)$ on real LLM generations (Section~\ref{sec:experiments}). The stateless formulation enables: (1) single-kernel $O(1)$ watermarking with zero intermediate allocation, (2) true full-vocabulary self-salt without top-$k$ approximation, and (3) compatibility with distributed inference (Section~\ref{sec:capabilities}). In benchmarks, SBW achieves 2$\times$ lower latency than SynthID and over 6000$\times$ lower than KGW, while being the first method to support full-vocabulary self-salt at production scale (Section~\ref{sec:scaling}). We provide a production-ready implementation integrated with vLLM~\cite{kwon2023efficient}. We additionally identify hash function design as a previously unexplored factor in watermark quality (Section~\ref{sec:hash}).
 
+\textbf{Code.} Our implementation, including the vLLM logits processor, is available at \url{https://github.com/si-mon-jinn/sbw} (\texttt{pip install sbw}); watermark evaluation library used to run experiments at \url{https://github.com/si-mon-jinn/waterpipe}; paper source at \url{https://github.com/si-mon-jinn/flip-dont-shuffle}.
+
 
 \section{Stateless Bernoulli Watermarking}
 \label{sec:method}
@@ -358,7 +360,7 @@ Regarding false accusations, the z-score framework provides calibrated Type~I er
 
 \section{Limitations}
 
-Our evaluation has limitations that suggest directions for future work. First, the main experiments use a single GPU (RTX 3090) and model (Qwen3-8B); while we validate on an additional model and setup (Appendix~\ref{app:generalization}), broader evaluation across model families remains future work. Second, while we validate robustness across 19 attack configurations (Appendix~\ref{app:robustness}), we did not evaluate adaptive watermark-removal strategies or spoofing attacks; dedicated security analysis remains future work. Third, our GPU implementation relies on compiler-generated Triton kernels via \texttt{torch.compile}; hand-tuned CUDA kernels with explicit memory coalescing and warp-level optimizations could further reduce latency, particularly at small batch sizes where kernel launch overhead dominates. Fourth, while the stateless formulation is architecturally compatible with distributed and multi-device inference (each device can independently compute identical green lists from the shared key), we have not empirically validated this in a tensor-parallel or pipeline-parallel deployment.
+The main experiments use a single GPU (RTX 3090) and model (Qwen3-8B); while we validate on an additional model and setup (Appendix~\ref{app:generalization}), broader evaluation across model families remains future work. While we validate robustness across 19 attack configurations (Appendix~\ref{app:robustness}), we did not evaluate adaptive watermark-removal strategies or spoofing attacks; dedicated security analysis remains future work. Our GPU implementation relies on compiler-generated Triton kernels via \texttt{torch.compile}; hand-tuned CUDA kernels with explicit memory coalescing and warp-level optimizations could further reduce latency, particularly at small batch sizes where kernel launch overhead dominates. Finally, while the stateless formulation is architecturally compatible with distributed and multi-device inference (each device can independently compute identical green lists from the shared key), we have not empirically validated this in a tensor-parallel or pipeline-parallel deployment.
 
 \bibliography{custom}
 
@@ -485,7 +487,7 @@ For the non-self-salt scheme, seven of eight configurations fail to reject the n
 
 \textbf{Generation parameters.} For each prompt, we generated one watermarked and one non-watermarked completion of up to 200 tokens. The same random seed (42) and hash key (15485863) were used across all experiments.
 
-\textbf{Code.} The full experimental pipeline, including generation scripts, evaluation code, and scripts to compute tables and plots, will be released upon publication.
+\textbf{Code.} This paper's source and supplementary materials are available at \url{https://github.com/si-mon-jinn/flip-dont-shuffle}, including scripts to reproduce all tables and figures. The watermarking method is implemented in the \texttt{sbw} library (\url{https://github.com/si-mon-jinn/sbw}, also available via \texttt{pip install sbw}). All experiments were run using \texttt{waterpipe} (\url{https://github.com/si-mon-jinn/waterpipe}), a watermark evaluation library.
 
 \section{Isolated Benchmark: Fairness and Methodology}
 \label{app:fairness}
