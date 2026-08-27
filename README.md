@@ -65,7 +65,7 @@ vllm serve Qwen/Qwen3-8B --port 8008 \
     --logits-processors vllm_sbw:SBWLogitsProcessor
 
 # 2. Install waterpipe
-pip install waterpipe
+pip install llm-waterpipe
 
 # 3. Run an experiment
 cp -r data/roc500_selfhash/roc500_selfhash_d5_g25 my_experiment
