@@ -1,5 +1,8 @@
 # Flip, Don't Shuffle: Watermarking LLMs at the Speed of Inference
 
+[![Paper](https://img.shields.io/badge/EMNLP%202026-Paper-blue)](https://aclanthology.org/TODO)
+[![arXiv](https://img.shields.io/badge/arXiv-TODO-b31b1b)](https://arxiv.org/abs/TODO)
+
 This repository contains the paper source, experimental data, and reproduction scripts for [Flip, Don't Shuffle: Watermarking LLMs at the Speed of Inference](https://aclanthology.org/TODO) (EMNLP 2026).
 
 ## Abstract
